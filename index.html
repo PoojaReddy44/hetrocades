@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hetrocades - Mobile Banner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #1a202c, #2d3748);
+            color: #e2e8f0;
+        }
+
+        .animated-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #2a4365, #2c5282, #3182ce, #2c5282, #2a4365);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            z-index: -1;
+            opacity: 0.7;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .brightness-element {
+            position: fixed;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, rgba(74, 222, 128, 0.2) 0%, rgba(74, 222, 128, 0) 70%);
+            border-radius: 50%;
+            animation: pulseBrightness 4s ease-in-out infinite alternate;
+            z-index: -2;
+        }
+
+        .brightness-element-1 {
+            top: 20%;
+            left: -50px;
+        }
+
+        .brightness-element-2 {
+            bottom: 20%;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: radial-gradient(circle, rgba(251, 191, 36, 0.2) 0%, rgba(251, 191, 36, 0) 70%);
+        }
+
+        @keyframes pulseBrightness {
+            0% { opacity: 0.3; transform: scale(0.8); }
+            100% { opacity: 0.6; transform: scale(1.2); }
+        }
+
+        .moving-shape {
+            position: fixed;
+            background-color: rgba(74, 222, 128, 0.1);
+            border-radius: 50%;
+            animation: moveShape 20s linear infinite;
+            z-index: -2;
+        }
+
+        .moving-shape.circle-1 { 
+            width: 40px; 
+            height: 40px; 
+            top: 10%; 
+            left: 5%; 
+            animation-duration: 18s; 
+        }
+        .moving-shape.circle-2 { 
+            width: 60px; 
+            height: 60px; 
+            bottom: 30%; 
+            right: 10%; 
+            animation-duration: 22s; 
+            border-radius: 10px; 
+        }
+        .moving-shape.circle-3 { 
+            width: 30px; 
+            height: 30px; 
+            top: 60%; 
+            left: 2%; 
+            animation-duration: 15s; 
+        }
+
+        @keyframes moveShape {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(30px, 30px); }
+            50% { transform: translate(0, 60px); }
+            75% { transform: translate(-30px, 30px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        .icon-float {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .card-hover:active {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .icon-svg {
+            width: 32px;
+            height: 32px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 100;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.9);
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #2a4365, #1a202c);
+            padding: 20px;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 400px;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 15px 25px rgba(0,0,0,0.5);
+            position: relative;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .close-button {
+            color: #aaa;
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover {
+            color: #e2e8f0;
+        }
+
+        .quote-carousel {
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            margin: 1rem 0;
+            padding: 0 1rem;
+        }
+
+        .quote-text {
+            font-style: italic;
+            font-size: 1rem;
+            color: #cbd5e0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            position: absolute;
+            text-align: center;
+            width: 90%;
+            line-height: 1.4;
+        }
+
+        .quote-text.active {
+            opacity: 1;
+        }
+
+        .contact-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, #1a202c, #2d3748, #1a202c);
+            color: #e2e8f0;
+            padding: 0.75rem;
+            z-index: 50;
+            box-shadow: 0 -3px 10px rgba(0,0,0,0.3);
+            font-size: 0.875rem;
+            text-align: center;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .contact-scroll {
+            display: inline-block;
+            animation: scroll 30s linear infinite;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+
+        /* Mobile specific adjustments */
+        @media (max-width: 768px) {
+            .service-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+            
+            .service-card {
+                padding: 1rem;
+                min-height: 120px;
+            }
+            
+            .service-card h3 {
+                font-size: 1rem;
+                margin-bottom: 0.5rem;
+            }
+            
+            .service-card p {
+                font-size: 0.875rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .service-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+            
+            .service-card {
+                padding: 1.25rem;
+                min-height: 100px;
+            }
+        }
+
+        /* Touch-friendly button sizing */
+        .btn-primary {
+            min-height: 44px;
+            min-width: 44px;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="animated-bg"></div>
+    
+    <div class="brightness-element brightness-element-1"></div>
+    <div class="brightness-element brightness-element-2"></div>
+    
+    <div class="moving-shape circle-1"></div>
+    <div class="moving-shape circle-2"></div>
+    <div class="moving-shape circle-3"></div>
+
+    <div class="relative z-10 min-h-screen flex flex-col justify-center px-4 pb-20">
+        <!-- Header Section -->
+        <div class="text-center mb-8">
+            <h2 class="text-4xl sm:text-5xl md:text-6xl font-extrabold mb-2 text-blue-300 drop-shadow-lg">Hetrocades</h2>
+            <h1 class="text-lg sm:text-xl md:text-2xl font-bold mb-4 text-teal-400 drop-shadow-lg pulse">
+                Your Partner in Business Excellence & Growth
+            </h1>
+            <div class="text-sm sm:text-base font-medium mb-6 text-gray-300 leading-relaxed">
+                By Alumni of India's Premier Institutions<br>
+                50+ Satisfied Clients • 97.5% Success Rate<br>
+                SEBI Certified Advisors
+            </div>
+        </div>
+
+        <!-- Quote Carousel -->
+        <div class="quote-carousel mb-6">
+            <!-- Quotes will be inserted here by JavaScript -->
+        </div>
+
+        <!-- About Us Button -->
+        <div class="text-center mb-8">
+            <button id="aboutUsBtn" class="btn-primary bg-teal-500 hover:bg-teal-600 text-white font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300 transform active:scale-95">
+                About Us
+            </button>
+        </div>
+
+        <!-- Services Grid -->
+        <div class="service-grid grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="service-card bg-blue-700 bg-opacity-70 backdrop-blur-sm p-4 rounded-xl shadow-lg flex flex-col items-center card-hover transition-all duration-300 cursor-pointer" data-service="compliance">
+                <svg class="icon-svg text-amber-400 mb-2 icon-float" viewBox="0 0 24 24">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                    <line x1="10" y1="9" x2="8" y2="9"></line>
+                </svg>
+                <h3 class="text-sm sm:text-base font-semibold mb-1 text-center">Business Compliance</h3>
+                <p class="text-xs sm:text-sm text-gray-200 text-center">Navigating regulations with ease</p>
+            </div>
+
+            <div class="service-card bg-blue-700 bg-opacity-70 backdrop-blur-sm p-4 rounded-xl shadow-lg flex flex-col items-center card-hover transition-all duration-300 cursor-pointer" data-service="design">
+                <svg class="icon-svg text-amber-400 mb-2 icon-float" viewBox="0 0 24 24">
+                    <path d="M12 2L2 7l10 5 10-5-10-5z"></path>
+                    <path d="M2 17l10 5 10-5"></path>
+                    <path d="M2 12l10 5 10-5"></path>
+                </svg>
+                <h3 class="text-sm sm:text-base font-semibold mb-1 text-center">Design Solutions</h3>
+                <p class="text-xs sm:text-sm text-gray-200 text-center">Inspiring functional spaces</p>
+            </div>
+
+            <div class="service-card bg-blue-700 bg-opacity-70 backdrop-blur-sm p-4 rounded-xl shadow-lg flex flex-col items-center card-hover transition-all duration-300 cursor-pointer" data-service="financial">
+                <svg class="icon-svg text-amber-400 mb-2 icon-float" viewBox="0 0 24 24">
+                    <path d="M12 1L3 6v6l9 5 9-5V6l-9-5z"></path>
+                    <polyline points="3 17 12 22 21 17"></polyline>
+                    <polyline points="3 12 12 17 21 12"></polyline>
+                </svg>
+                <h3 class="text-sm sm:text-base font-semibold mb-1 text-center">Financial Advisory</h3>
+                <p class="text-xs sm:text-sm text-gray-200 text-center">Strategic financial guidance</p>
+            </div>
+
+            <div class="service-card bg-blue-700 bg-opacity-70 backdrop-blur-sm p-4 rounded-xl shadow-lg flex flex-col items-center card-hover transition-all duration-300 cursor-pointer" data-service="loan">
+                <svg class="icon-svg text-amber-400 mb-2 icon-float" viewBox="0 0 24 24">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                </svg>
+                <h3 class="text-sm sm:text-base font-semibold mb-1 text-center">Loan Facilitation</h3>
+                <p class="text-xs sm:text-sm text-gray-200 text-center">Streamlined financial access</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Service Modal -->
+    <div id="serviceModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeServiceModal">&times;</span>
+            <h2 id="modalTitle" class="text-2xl font-bold mb-4 text-teal-300"></h2>
+            <ul id="modalContent" class="list-disc list-inside text-sm text-gray-200 space-y-1">
+            </ul>
+        </div>
+    </div>
+
+    <!-- About Us Modal -->
+    <div id="aboutUsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" id="closeAboutUsModal">&times;</span>
+            <h2 class="text-2xl font-bold mb-4 text-teal-300">About Hetrocades</h2>
+            <div class="text-sm text-gray-200 leading-relaxed space-y-3">
+                <p>Hetrocades is a professional services firm specializing in business compliance, financial advisory, and design solutions.</p>
+                <p>Our expert team delivers comprehensive services tailored to your specific needs, with years of experience across multiple industries.</p>
+                <p>We pride ourselves on our deep expertise and client-centric approach, ensuring every solution aligns with your strategic goals.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Bar -->
+    <div class="contact-bar">
+        <div class="contact-scroll">
+            📧 info@hetrocades.com • 📞 +91 98765 43210 • 🌐 www.hetrocades.com • 📧 info@hetrocades.com • 📞 +91 98765 43210 • 🌐 www.hetrocades.com
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Hetrocades Mobile Banner Loaded!');
+
+            const serviceCards = document.querySelectorAll('.service-card');
+            const serviceModal = document.getElementById('serviceModal');
+            const closeServiceModalBtn = document.getElementById('closeServiceModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const quoteCarousel = document.querySelector('.quote-carousel');
+
+            const aboutUsBtn = document.getElementById('aboutUsBtn');
+            const aboutUsModal = document.getElementById('aboutUsModal');
+            const closeAboutUsModalBtn = document.getElementById('closeAboutUsModal');
+
+            // Service details
+            const serviceDetails = {
+                compliance: {
+                    title: 'Business Compliance',
+                    items: [
+                        'EPFO Registrations',
+                        'Digital Signature Certificates (DSC)',
+                        'eSign Activation',
+                        'Professional Tax (PT) Law',
+                        'Gratuity Law Compliance',
+                        'Employee State Insurance (ESI)',
+                        'CLRA Compliance',
+                        'Shops & Establishment',
+                        'Payroll Processing'
+                    ]
+                },
+                design: {
+                    title: 'Design Solutions',
+                    items: [
+                        'Residential Space Planning',
+                        'Commercial Interior Design',
+                        '3D Visualization',
+                        'Material Selection',
+                        'Project Management'
+                    ]
+                },
+                financial: {
+                    title: 'Financial Advisory',
+                    items: [
+                        'SEBI Registered Investment Advice',
+                        'Portfolio Management',
+                        'Retirement Planning',
+                        'Tax-Saving Strategies',
+                        'Wealth Management'
+                    ]
+                },
+                loan: {
+                    title: 'Loan Facilitation',
+                    items: [
+                        'Home Loan Processing',
+                        'Business Loan Facilitation',
+                        'Documentation Assistance',
+                        'Eligibility Assessment',
+                        'Quick Approval Process'
+                    ]
+                }
+            };
+
+            // Handle service card clicks
+            serviceCards.forEach(card => {
+                card.addEventListener('click', () => {
+                    const serviceType = card.dataset.service;
+                    const details = serviceDetails[serviceType];
+
+                    if (details) {
+                        modalTitle.textContent = details.title;
+                        modalContent.innerHTML = '';
+                        details.items.forEach(item => {
+                            const li = document.createElement('li');
+                            li.textContent = item;
+                            modalContent.appendChild(li);
+                        });
+                        serviceModal.style.display = 'flex';
+                    }
+                });
+            });
+
+            // Close modals
+            closeServiceModalBtn.addEventListener('click', () => {
+                serviceModal.style.display = 'none';
+            });
+
+            closeAboutUsModalBtn.addEventListener('click', () => {
+                aboutUsModal.style.display = 'none';
+            });
+
+            // Close modals when clicking outside
+            window.addEventListener('click', (event) => {
+                if (event.target === serviceModal) {
+                    serviceModal.style.display = 'none';
+                }
+                if (event.target === aboutUsModal) {
+                    aboutUsModal.style.display = 'none';
+                }
+            });
+
+            // About Us button
+            aboutUsBtn.addEventListener('click', () => {
+                aboutUsModal.style.display = 'flex';
+            });
+
+            // Quote carousel
+            const quotes = [
+                "The only way to do great work is to love what you do. – Steve Jobs",
+                "Success is not final; failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+                "Your work is going to fill a large part of your life, and the only way to be truly satisfied is to do what you believe is great work. – Steve Jobs",
+                "The future belongs to those who believe in the beauty of their dreams. – Eleanor Roosevelt",
+                "Strive not to be a success, but rather to be of value. – Albert Einstein"
+            ];
+
+            let currentQuoteIndex = 0;
+
+            function showQuote(index) {
+                const existingQuotes = quoteCarousel.querySelectorAll('.quote-text');
+                existingQuotes.forEach(q => q.classList.remove('active'));
+
+                let quoteElement = quoteCarousel.querySelector(`#quote-${index}`);
+                if (!quoteElement) {
+                    quoteElement = document.createElement('p');
+                    quoteElement.id = `quote-${index}`;
+                    quoteElement.classList.add('quote-text');
+                    quoteElement.textContent = quotes[index];
+                    quoteCarousel.appendChild(quoteElement);
+                }
+                setTimeout(() => {
+                    quoteElement.classList.add('active');
+                }, 10);
+            }
+
+            function rotateQuotes() {
+                showQuote(currentQuoteIndex);
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            }
+
+            rotateQuotes();
+            setInterval(rotateQuotes, 5000);
+
+            // Prevent zoom on double tap for iOS
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function (event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
+        });
+    </script>
+</body>
+</html>
